@@ -2,24 +2,50 @@ package ru.netology.repository;
 
 import ru.netology.model.Post;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 // Stub
 public class PostRepository {
-  public List<Post> all() {
-    return Collections.emptyList();
-  }
+    // java.util.concurrent.atomic, которые обеспечивают атомарность операций чтения и записи
+    // Атомарная операция — операция, которая либо выполняется целиком, либо не выполняется вовсе;
+    private final AtomicLong postId;
+    private final Map<Long, Post> postsMap;
 
-  public Optional<Post> getById(long id) {
-    return Optional.empty();
-  }
+    public PostRepository() {
+        postId = new AtomicLong(0);
+        // C ConcurrentHashMap у вас есть лучший выбор, не только потому, что это безопасно в многопоточном окружении,
+        // но так же предоставляет лучшую производительность
+        postsMap = new ConcurrentHashMap<>();
+    }
 
-  public Post save(Post post) {
-    return post;
-  }
+    public List<Post> all() {
+        return new ArrayList<>(postsMap.values());
+    }
 
-  public void removeById(long id) {
-  }
+    // ofNullable — для создания Optional из значения, которое может быть null. Если значение не null,
+    // то будет создан Optional со значением, иначе — пустой Optional
+    public Optional<Post> getById(long id) {
+        return Optional.ofNullable(postsMap.get(id));
+    }
+
+    public Post save(Post post) {
+        long specificID = post.getId();
+        // если больше 0 и наличие
+        if (specificID > 0 && postsMap.containsKey(specificID)) {
+            // заменяем
+            postsMap.replace(specificID, post);
+        } else {
+            long newIdPost = specificID == 0 ? postId.incrementAndGet() : specificID;
+            post.setId(newIdPost);
+            // добавление нового элемента в postsMap
+            postsMap.put(newIdPost, post);
+        }
+        return post;
+    }
+
+    public void removeById(long id) {
+        postsMap.remove(id);
+    }
 }
