@@ -9,3 +9,8 @@ Content-Type: application/json
   "id": 0,
   "content": "Last Post"
 }
+
+
+###
+
+GET http://localhost:8080/api/posts/1
