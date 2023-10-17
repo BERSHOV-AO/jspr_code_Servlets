@@ -6,10 +6,9 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+// Атомарная операция — операция, которая либо выполняется целиком, либо не выполняется вовсе;
 // Stub
 public class PostRepository {
-    // java.util.concurrent.atomic, которые обеспечивают атомарность операций чтения и записи
-    // Атомарная операция — операция, которая либо выполняется целиком, либо не выполняется вовсе;
     private final AtomicLong postId;
     private final Map<Long, Post> postsMap;
 

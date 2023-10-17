@@ -7,8 +7,6 @@ import ru.netology.service.PostService;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PostController {
     public static final String APPLICATION_JSON = "application/json";
@@ -25,37 +23,30 @@ public class PostController {
         response.getWriter().print(gson.toJson(data));
     }
 
-    public void getById(long id, HttpServletResponse response) throws IOException {
+    public void getById(long id, HttpServletResponse response) {
 
-        // APPLICATION_JSON
         response.setContentType(APPLICATION_JSON);
         final var gson = new Gson();
         final var data = service.getById(id);
         try {
-          // Будем JSON преобразовывать методом toJson()
             response.getWriter().print(gson.toJson(data));
         } catch (IOException e) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
-    // тело запроса и ответ
     public void save(Reader body, HttpServletResponse response) throws IOException {
         response.setContentType(APPLICATION_JSON);
         final var gson = new Gson();
         final var post = gson.fromJson(body, Post.class);
-        // Метод save() возвращает тот post который мы получили
-        // Условно сохраняем, на самом деле возвращаем пользователю
-        // В домашнем задании надо именно сохранять.
         final var data = service.save(post);
-        // Будем JSON преобразовывать методом toJson()
         response.getWriter().print(gson.toJson(data));
     }
 
     // Удаление по ID
     public void removeById(long id, HttpServletResponse response) {
-      service.removeById(id);
-      response.setStatus(HttpServletResponse.SC_OK);
+        service.removeById(id);
+        response.setStatus(HttpServletResponse.SC_OK);
 
     }
 }
