@@ -22,8 +22,8 @@ public class MainServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            var path = req.getRequestURI();
-            var method = req.getMethod();
+            final var path = req.getRequestURI();
+            final var method = req.getMethod();
             if (method.equals("GET") && path.equals("/api/posts")) {
                 controller.all(resp);
                 return;
