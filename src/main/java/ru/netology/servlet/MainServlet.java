@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 public class MainServlet extends HttpServlet {
 
+    private static final String API_POSTS = "/api/posts";
+    private static final String API_POSTS_ID = "/api/posts/\\d+";
+
     private PostController controller;
 
     @Override
@@ -24,21 +27,21 @@ public class MainServlet extends HttpServlet {
         try {
             final var path = req.getRequestURI();
             final var method = req.getMethod();
-            if (method.equals("GET") && path.equals("/api/posts")) {
+            if (method.equals("GET") && path.equals(API_POSTS)) {
                 controller.all(resp);
                 return;
             }
 
-            if (method.equals("GET") && path.matches("/api/posts/\\d+")) {
+            if (method.equals("GET") && path.matches(API_POSTS_ID)) {
                 // Простой способ
                 controller.getById(getPostID(path), resp);
                 return;
             }
-            if (method.equals("POST") && path.equals("/api/posts")) {
+            if (method.equals("POST") && path.equals(API_POSTS)) {
                 controller.save(req.getReader(), resp);
             }
 
-            if (method.equals("DELETE") && path.matches("/api/posts/\\d+")) {
+            if (method.equals("DELETE") && path.matches(API_POSTS_ID)) {
                 controller.removeById(getPostID(path), resp);
                 return;
             }
