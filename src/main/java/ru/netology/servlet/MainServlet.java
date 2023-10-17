@@ -72,7 +72,7 @@ public class MainServlet extends HttpServlet {
                // var id = Long.parseLong(path.substring(path.lastIndexOf("/")));
                 // И именно этот id, мы и буде перредовать в метод controller.getById(id, resp);
                 //controller.getById(id, resp);
-                controller.removeById(getPostID(path), resp);
+                controller.getById(getPostID(path), resp);
                 return;
             }
             // Так же метод POST, Если пришел метод POST И путь "/api/posts",
@@ -82,7 +82,7 @@ public class MainServlet extends HttpServlet {
             }
 
             // Метод DELETED, удаляем по конкретному (id - \\d+) "/api/posts/\\d+"
-            if (method.equals("DELETED") && path.matches("/api/posts/\\d+")) {
+            if (method.equals("DELETE") && path.matches("/api/posts/\\d+")) {
                 // Простой способ
               //  var id = Long.parseLong(path.substring(path.lastIndexOf("/")));
                 controller.removeById(getPostID(path), resp);
