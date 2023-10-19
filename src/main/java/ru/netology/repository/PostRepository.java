@@ -1,5 +1,6 @@
 package ru.netology.repository;
 
+import org.springframework.stereotype.Repository;
 import ru.netology.model.Post;
 
 import java.util.*;
@@ -8,6 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 // Атомарная операция — операция, которая либо выполняется целиком, либо не выполняется вовсе;
 // Stub
+@Repository
 public class PostRepository {
     private final AtomicLong postId;
     private final Map<Long, Post> postsMap;
